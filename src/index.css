@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-background-dark: oklch(27.4% 0.006 286.033); /* Zinc 800 */
+    --gradient-dark: linear-gradient(to right, #0a0f1f, #1a202c);
+    --color-primary: #5266ff;
+    --color-secondary: #b871ff;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* Removed h1 and h2 styles to prevent conflicts with Tailwind classes */
+
+button {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+a {
+    &:hover {
+        cursor: pointer;
+    }
+}
