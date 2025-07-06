@@ -2,13 +2,41 @@ import type { Props as ContainerProps } from './Sidebar.container';
 import { Styles } from './Sidebar.styled';
 import { useNavigate, useLocation } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
+import { ThemeSwitcherContainer } from '../ThemeSwitcher/ThemeSwitcher.container';
+import { useState } from 'react';
 
 interface Props extends ContainerProps {}
+
+const menuItems = [
+    { path: '/dashboard', label: 'Inicio', icon: 'fa-solid fa-house' },
+    { path: '/courses', label: 'Cursos', icon: 'fa-solid fa-book' },
+    { path: '/students', label: 'Alumnos', icon: 'fa-solid fa-user' },
+    {
+        path: '/incidences',
+        label: 'Incidencias',
+        icon: 'fa-solid fa-exclamation-triangle',
+        subMenus: [
+            { path: '/incidences/regulations', label: 'Regulaciones', icon: 'fa-solid fa-pen' },
+            {
+                path: '/incidences/reports',
+                label: 'Reportes',
+                icon: 'fa-solid fa-file-pen',
+            },
+        ],
+    },
+    {
+        path: '/attendance',
+        label: 'Presentismo',
+        icon: 'fa fa-calendar',
+    },
+];
 
 export const Sidebar = ({ children }: Props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { logout, user } = useAuth();
+
+    const [subMenuOpen, setSubMenuOpen] = useState(false);
 
     const handleNavigation = (path: string) => {
         navigate(path);
@@ -20,54 +48,66 @@ export const Sidebar = ({ children }: Props) => {
     };
 
     const isActive = (path: string) => {
-        return location.pathname === path;
+        return location.pathname.includes(path);
     };
 
     const getNavItemClass = (path: string) => {
         return isActive(path) ? Styles.navItemActive : Styles.navItem;
     };
 
+    const getSubMenuClass = (path: string) => {
+        return isActive(path) ? Styles.navSubItemActive : Styles.navSubItem;
+    };
+
     return (
         <div className={Styles.layout}>
             <aside className={Styles.sidebar}>
                 <div className={Styles.sidebarContent}>
-                    <h3 className={Styles.sidebarTitle}>Informes</h3>
-                    {/* <div className={Styles.sidebarSeparator}> */}
+                    <div className={Styles.sidebarHeader}>
+                        <h3 className={Styles.sidebarTitle}>Informes</h3>
+                        <ThemeSwitcherContainer />
+                    </div>
                     <nav className={Styles.nav}>
                         <ul className={Styles.navList}>
-                            <li
-                                className={getNavItemClass('/')}
-                                onClick={() => handleNavigation('/')}>
-                                <i className={`fa-solid fa-house ${Styles.navItemIcon}`}></i>
-                                <span className={Styles.navItemText}>Inicio</span>
-                            </li>
-                            <li
-                                className={getNavItemClass('/courses')}
-                                onClick={() => handleNavigation('/courses')}>
-                                <i className={`fa-solid fa-users ${Styles.navItemIcon}`}></i>
-                                <span className={Styles.navItemText}>Cursos</span>
-                            </li>
-                            <li
-                                className={getNavItemClass('/students')}
-                                onClick={() => handleNavigation('/students')}>
-                                <i className={`fa-solid fa-user ${Styles.navItemIcon}`}></i>
-                                <span className={Styles.navItemText}>Alumnos</span>
-                            </li>
-                            <li className={Styles.navItem}>
-                                <i className={`fa-solid fa-book ${Styles.navItemIcon}`}></i>
-                                <span className={Styles.navItemText}>Materias</span>
-                            </li>
-                            <li className={Styles.navItem}>
-                                <i className={`fa-solid fa-user-circle ${Styles.navItemIcon}`}></i>
-                                <span className={Styles.navItemText}>Profesores</span>
-                            </li>
-                            <li className={Styles.navItem}>
-                                <i className={`fa-solid fa-file-pen ${Styles.navItemIcon}`}></i>
-                                <span className={Styles.navItemText}>Calificaciones</span>
-                            </li>
+                            {menuItems.map(item => (
+                                <div key={item.path} className={Styles.navItemContainer}>
+                                    <li
+                                        key={item.path}
+                                        className={getNavItemClass(item.path)}
+                                        onClick={() => handleNavigation(item.path)}>
+                                        <i className={`${item.icon} ${Styles.navItemIcon}`}></i>
+                                        <span className={Styles.navItemText}>{item.label}</span>
+                                        {item.subMenus && (
+                                            <i
+                                                className={`fa-solid fa-chevron-down ${
+                                                    Styles.navItemIcon
+                                                } w-full text-right transition-discrete duration-150 ${
+                                                    subMenuOpen ? 'rotate-x-180' : ''
+                                                }`}
+                                                onClick={() => setSubMenuOpen(!subMenuOpen)}></i>
+                                        )}
+                                    </li>
+                                    {subMenuOpen && item.subMenus && (
+                                        <ul className={Styles.subList}>
+                                            {item.subMenus.map(subMenu => (
+                                                <li
+                                                    key={subMenu.path}
+                                                    className={getSubMenuClass(subMenu.path)}
+                                                    onClick={() => handleNavigation(subMenu.path)}>
+                                                    <i
+                                                        className={`${subMenu.icon} ${Styles.navItemIcon}`}></i>
+                                                    <span className={Styles.navItemText}>
+                                                        {subMenu.label}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            ))}
                         </ul>
                     </nav>
-                    {/* </div> */}
+
                     {/* User info and logout section */}
                     <div className={Styles.userSection}>
                         <div className={Styles.userInfo}>

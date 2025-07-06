@@ -1,10 +1,17 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --color-background-dark: oklch(27.4% 0.006 286.033); /* Zinc 800 */
     --gradient-dark: linear-gradient(to right, #0a0f1f, #1a202c);
     --color-primary: #5266ff;
     --color-secondary: #b871ff;
+
+    /* Dark mode colors */
+    --color-background-dark: oklch(27.4% 0.006 286.033); /* Zinc 800 */
+    --gradient-dark: linear-gradient(to right, #0a0f1f, #1a202c);
+    --color-dark-primary: #0f1861;
+    --color-dark-secondary: #300659;
 }
 
 body {
@@ -17,10 +24,15 @@ button {
     &:hover {
         cursor: pointer;
     }
+    @apply transition-all duration-200 ease-in-out rounded-lg;
 }
 
 a {
     &:hover {
         cursor: pointer;
     }
+}
+
+h1 {
+    @apply text-4xl font-bold dark:text-white;
 }

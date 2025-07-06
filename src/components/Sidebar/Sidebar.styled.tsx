@@ -1,26 +1,33 @@
 export const Styles = {
     layout: 'flex flex-col xl:flex-row h-screen w-full',
     sidebar:
-        'w-full xl:h-full xl:w-1/7 bg-gradient-to-r from-primary to-secondary p-4 shadow-sm text-white',
+        'w-full xl:h-full xl:w-1/7 bg-gradient-to-r from-primary to-secondary dark:from-dark-primary dark:to-dark-secondary p-4 shadow-sm text-white transition-colors duration-200 ease-in-out',
     sidebarContent:
         'items-center flex flex-row justify-between xl:items-start xl:h-full xl:flex-col',
-    sidebarTitle: 'text-2xl font-bold xl:mb-4',
+    sidebarHeader: 'flex flex-row gap-4 xl:justify-between items-center xl:w-full xl:mb-4 xl:px-0',
+    sidebarTitle: 'text-2xl font-bold',
     nav: 'xl:w-full',
-    navList: 'flex flex-row gap-6 list-none xl:flex-col p-0 xl:m-4 xl:mt-10 xl:gap-0',
+    navList: 'flex flex-row gap-6 list-none xl:flex-col p-0 xl:m-0 xl:mt-10 xl:gap-0',
+    subList: 'flex flex-col gap-1 xl:ml-4 p-2 transition-all duration-200 ease-in-out text-sm',
+    navItemContainer: 'relative transition-all duration-1000 ease-in-out',
     navItem:
-        'flex flex-row text-center items-center p-2 xl:m-1 rounded-md cursor-pointer transition-colors hover:bg-white hover:text-primary',
+        'flex flex-row text-center items-center p-2 xl:m-1 rounded-md cursor-pointer transition-colors hover:bg-white dark:hover:bg-zinc-700 hover:text-primary',
     navItemActive:
-        'flex flex-row text-center items-center p-2 xl:m-1 rounded-md cursor-pointer transition-colors bg-white text-primary font-bold',
-    navItemIcon: 'xl:mr-2 items-center',
-    navItemText: 'hidden xl:block',
+        'flex flex-row text-center items-center p-2 xl:m-1 rounded-md cursor-pointer transition-colors bg-white dark:bg-zinc-700 text-primary font-bold',
+    navSubItem:
+        'flex flex-row text-center items-center p-1 xl:m-1 rounded-md cursor-pointer transition-colors hover:bg-white dark:hover:bg-zinc-700 hover:text-primary',
+    navSubItemActive:
+        'flex flex-row text-center items-center p-1 xl:m-1 rounded-md cursor-pointer transition-colors bg-white dark:bg-zinc-700 text-primary font-bold',
+    navItemIcon: 'items-center',
+    navItemText: 'xl:ml-2 hidden xl:block',
     sidebarSeparator: 'flex flex-row xl:flex-col justify-between xl:h-full',
     userSection:
-        'xl:w-full xl:mt-3 xl:mt-auto xl:pt-4 text-white xl:bg-gradient-to-r from-secondary to-primary rounded-2xl',
+        'xl:w-full xl:mt-3 xl:mt-auto xl:pt-4 text-white xl:bg-gradient-to-r from-secondary to-primary dark:from-dark-secondary dark:to-dark-primary rounded-2xl transition-colors duration-200 ease-in-out',
     userInfo: 'hidden xl:block xl:px-4 xl:py-2',
     userName: 'font-medium text-xl',
     userEmail: 'text-sm overflow-hidden text-ellipsis whitespace-nowrap',
     logoutButton:
         'w-full text-xl p-2 xl:mt-2 xl:py-2 xl:text-sm font-semibold xl:bg-neutral-800 text-red-600 xl:hover:bg-black xl:rounded-b-2xl transition-colors',
     logoutButtonText: 'hidden xl:block',
-    mainContent: 'flex-1 px-15 py-4 overflow-auto bg-gray-100',
+    mainContent: 'flex-1 px-4 xl:px-15 pt-8 pb-4 overflow-auto bg-gray-100 dark:bg-zinc-800',
 };

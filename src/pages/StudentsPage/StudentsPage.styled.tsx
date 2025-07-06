@@ -1,6 +1,5 @@
 export const Styles = {
-    pageContainer: 'p-6',
-    pageTitle: 'text-3xl font-bold text-gray-800 mb-2',
-    pageDescription: 'text-gray-600',
+    pageTitle: 'b-2 dark:text-white',
+    pageDescription: 'mt-2 text-gray-600 dark:text-gray-400',
     pageHeader: 'mb-6',
 };
