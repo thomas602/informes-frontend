@@ -5,6 +5,7 @@ interface User {
     id: string;
     email: string;
     name: string;
+    avatar: string;
 }
 
 interface AuthContextType {
@@ -71,6 +72,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 id: '1',
                 email: email,
                 name: 'Thomas Reynoso',
+                avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX4q0-hFsRa8s1kzziYZVHIW1zg-yH0S2POA&s',
             };
 
             // Mock token - replace with actual token from API

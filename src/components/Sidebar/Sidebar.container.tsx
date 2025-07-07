@@ -1,20 +1,14 @@
-import { memo } from "react";
-import type { ReactNode } from "react";
-import { Sidebar } from "./Sidebar";
+import { memo } from 'react';
+import { Sidebar } from './Sidebar';
 
 export interface Props {
-  children?: ReactNode;
+    children: React.ReactNode;
 }
 
 export const SidebarContainer = (props: Props) => {
-  const { children } = props;
+    const { children } = props;
 
-  const childProps = {
-    ...props,
-    children,
-  };
-
-  return <Sidebar {...childProps} />;
+    return <Sidebar>{children}</Sidebar>;
 };
 
-export const MemorizedSidebarContainer = memo(SidebarContainer);
+export const MemoizedSidebarContainer = memo(SidebarContainer);

@@ -21,7 +21,7 @@ export const Styles = {
     dashboard: `
         grid grid-cols-2 xl:grid-cols-5 gap-4
         mt-8`,
-    dashboardItem: `flex flex-col gap-2 w-full
+    dashboardItem: `overflow-x-hidden flex flex-col gap-2 w-full
         p-4
         border border-gray-300
         dark:border-zinc-700
@@ -37,7 +37,7 @@ export const Styles = {
     studentsAttendanceHeaderDescription: 'text-gray-600 dark:text-gray-400',
     studentsAttendanceList: 'mt-4 flex flex-col gap-4',
     studentsAttendanceListItem:
-        'flex flex-row gap-2 px-4 py-3 justify-between border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-gray-400 items-center',
+        'overflow-x-auto flex flex-row gap-2 px-4 py-3 justify-between border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-gray-400 items-center',
     studentsAttendanceListItemName: 'text-lg font-bold',
     studentsAttendanceListItemActions: 'flex flex-row gap-2',
     studentsAttendanceListItemAction: `px-2 py-1 rounded-md border border-gray-300 dark:border-zinc-700

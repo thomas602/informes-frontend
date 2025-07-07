@@ -57,7 +57,7 @@ export const AttendancePage = (props: Props) => {
         setStudentsAttendance(prev => prev.map(student => ({ ...student, attendance })));
     };
     return (
-        <section>
+        <section className='overflow-x-hidden'>
             <div className={Styles.pageHeader}>
                 <div className={Styles.pageTitle}>
                     <h1>Presentismo</h1>

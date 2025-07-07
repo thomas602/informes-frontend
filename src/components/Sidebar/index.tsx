@@ -1,6 +1,6 @@
 import {
-  MemorizedSidebarContainer as SidebarMemo,
-  SidebarContainer as Sidebar,
-} from "./Sidebar.container";
+    SidebarContainer as Sidebar,
+    MemoizedSidebarContainer as SidebarMemo,
+} from './Sidebar.container';
 
 export { Sidebar, SidebarMemo };

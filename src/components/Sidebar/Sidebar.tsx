@@ -1,13 +1,13 @@
-import type { Props as ContainerProps } from './Sidebar.container';
-import { Styles } from './Sidebar.styled';
-import { useNavigate, useLocation } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import { ThemeSwitcherContainer } from '../ThemeSwitcher/ThemeSwitcher.container';
+import type { Props as ContainerProps } from './Sidebar.container';
+import { Styles } from './Sidebar.styled';
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router';
 
 interface Props extends ContainerProps {}
 
-const menuItems = [
+const initialMenus = [
     { path: '/dashboard', label: 'Inicio', icon: 'fa-solid fa-house' },
     { path: '/courses', label: 'Cursos', icon: 'fa-solid fa-book' },
     { path: '/students', label: 'Alumnos', icon: 'fa-solid fa-user' },
@@ -31,15 +31,22 @@ const menuItems = [
     },
 ];
 
-export const Sidebar = ({ children }: Props) => {
-    const navigate = useNavigate();
-    const location = useLocation();
+export const Sidebar = (props: Props) => {
+    const { children } = props;
+    const [menus, setMenus] = useState(initialMenus);
+    const [isOpen, setIsOpen] = useState(true);
+    const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
     const { logout, user } = useAuth();
 
-    const [subMenuOpen, setSubMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleNavigation = (path: string) => {
         navigate(path);
+    };
+
+    const isActive = (path: string) => {
+        return location.pathname.includes(path);
     };
 
     const handleLogout = () => {
@@ -47,81 +54,136 @@ export const Sidebar = ({ children }: Props) => {
         navigate('/login');
     };
 
-    const isActive = (path: string) => {
-        return location.pathname.includes(path);
-    };
-
-    const getNavItemClass = (path: string) => {
-        return isActive(path) ? Styles.navItemActive : Styles.navItem;
-    };
-
-    const getSubMenuClass = (path: string) => {
-        return isActive(path) ? Styles.navSubItemActive : Styles.navSubItem;
-    };
+    console.log(user);
 
     return (
         <div className={Styles.layout}>
-            <aside className={Styles.sidebar}>
-                <div className={Styles.sidebarContent}>
-                    <div className={Styles.sidebarHeader}>
-                        <h3 className={Styles.sidebarTitle}>Informes</h3>
-                        <ThemeSwitcherContainer />
-                    </div>
-                    <nav className={Styles.nav}>
-                        <ul className={Styles.navList}>
-                            {menuItems.map(item => (
-                                <div key={item.path} className={Styles.navItemContainer}>
-                                    <li
-                                        key={item.path}
-                                        className={getNavItemClass(item.path)}
-                                        onClick={() => handleNavigation(item.path)}>
-                                        <i className={`${item.icon} ${Styles.navItemIcon}`}></i>
-                                        <span className={Styles.navItemText}>{item.label}</span>
-                                        {item.subMenus && (
-                                            <i
-                                                className={`fa-solid fa-chevron-down ${
-                                                    Styles.navItemIcon
-                                                } w-full text-right transition-discrete duration-150 ${
-                                                    subMenuOpen ? 'rotate-x-180' : ''
-                                                }`}
-                                                onClick={() => setSubMenuOpen(!subMenuOpen)}></i>
-                                        )}
-                                    </li>
-                                    {subMenuOpen && item.subMenus && (
-                                        <ul className={Styles.subList}>
-                                            {item.subMenus.map(subMenu => (
-                                                <li
-                                                    key={subMenu.path}
-                                                    className={getSubMenuClass(subMenu.path)}
-                                                    onClick={() => handleNavigation(subMenu.path)}>
-                                                    <i
-                                                        className={`${subMenu.icon} ${Styles.navItemIcon}`}></i>
-                                                    <span className={Styles.navItemText}>
-                                                        {subMenu.label}
-                                                    </span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </div>
-                            ))}
-                        </ul>
-                    </nav>
+            <div className={`${Styles.sidebar} ${isOpen ? 'w-72' : 'w-20'}`}>
+                <i
+                    className={`${Styles.sidebarCollapseIcon} ${isOpen ? 'rotate-180' : ''}`}
+                    aria-hidden='true'
+                    onClick={() => setIsOpen(!isOpen)}></i>
+                <h1 className={`${Styles.sidebarTitle} ${isOpen ? 'block' : 'scale-0'}`}>
+                    Informes
+                </h1>
+                <div className={`${Styles.search} ${isOpen ? 'gap-2 bg-white' : 'gap-0'}`}>
+                    <i
+                        className={`fa-solid fa-magnifying-glass text-2xl transition-all duration-200 ease-in-out ${
+                            isOpen ? '' : 'w-full text-center text-whit'
+                        }`}
+                        aria-hidden='true'></i>
+                    <input
+                        className={`${Styles.searchInput} ${isOpen ? 'block' : 'hidden'}`}
+                        type='text'
+                        placeholder='Buscar'
+                        onChange={e => {
+                            setMenus(
+                                initialMenus.filter(
+                                    menu =>
+                                        menu.label
+                                            .toLowerCase()
+                                            .includes(e.target.value.toLowerCase()) ||
+                                        menu.subMenus?.some(subMenu =>
+                                            subMenu.label
+                                                .toLowerCase()
+                                                .includes(e.target.value.toLowerCase()),
+                                        ),
+                                ),
+                            );
+                        }}
+                    />
+                </div>
 
-                    {/* User info and logout section */}
-                    <div className={Styles.userSection}>
-                        <div className={Styles.userInfo}>
-                            <div className={Styles.userName}>{user?.name}</div>
-                            <div className={Styles.userEmail}>{user?.email}</div>
+                <ul className={Styles.navList}>
+                    {menus.map(menu => (
+                        <>
+                            <li
+                                key={menu.path}
+                                className={`${Styles.navItem} ${
+                                    isActive(menu.path)
+                                        ? Styles.navItemActive
+                                        : 'hover:bg-white/20 dark:hover:bg-black/20'
+                                }`}
+                                onClick={() => {
+                                    if (menu.subMenus) {
+                                        if (!isOpen) {
+                                            setIsOpen(true);
+                                        }
+                                        if (!isSubMenuOpen) {
+                                            setIsSubMenuOpen(true);
+                                        }
+                                        if (isOpen && isSubMenuOpen) {
+                                            setIsSubMenuOpen(false);
+                                        }
+                                    } else {
+                                        handleNavigation(menu.path);
+                                    }
+                                }}>
+                                <div className='flex flex-row gap-0'>
+                                    <i
+                                        className={`${menu.icon} fa-fw ${Styles.navItemIcon} ${
+                                            isOpen ? '' : 'w-full text-center'
+                                        }`}></i>
+                                    <p
+                                        className={`${Styles.navItemLabel} ${
+                                            isOpen ? 'block ml-2' : 'hidden'
+                                        }`}>
+                                        {menu.label}
+                                    </p>
+                                </div>
+                                {menu.subMenus && isOpen && (
+                                    <i
+                                        className={`fa-solid fa-chevron-down absolute right-5 transition-discrete duration-150 ${
+                                            isSubMenuOpen ? 'rotate-x-180' : ''
+                                        }`}
+                                        aria-hidden='true'
+                                        onClick={() => setIsSubMenuOpen(!isSubMenuOpen)}></i>
+                                )}
+                            </li>
+                            {isSubMenuOpen && menu.subMenus && isOpen && (
+                                <ul className={Styles.subMenu}>
+                                    {menu.subMenus.map(subMenu => (
+                                        <li
+                                            key={subMenu.path}
+                                            className={`${Styles.subMenuItem} ${
+                                                isActive(subMenu.path)
+                                                    ? Styles.subMenuItemActive
+                                                    : 'hover:bg-white/20 dark:hover:bg-black/20'
+                                            }`}
+                                            onClick={() => handleNavigation(subMenu.path)}>
+                                            {subMenu.label}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </>
+                    ))}
+                </ul>
+                <ThemeSwitcherContainer />
+                {/* User info and logout section */}
+                <div className={Styles.userSection}>
+                    <div className={Styles.userInfo}>
+                        <div className={Styles.userAvatar}>
+                            <img
+                                src={user?.avatar}
+                                alt='User avatar'
+                                className='w-full h-full object-cover rounded-full'
+                            />
                         </div>
-                        <button onClick={handleLogout} className={Styles.logoutButton}>
-                            <i className={`fa-solid fa-sign-out-alt ${Styles.navItemIcon}`}></i>
-                            <p className={Styles.logoutButtonText}>Cerrar sesión</p>
-                        </button>
+                        <div className={`${isOpen ? 'block' : 'hidden'}`}>
+                            <p className={Styles.userName}>{user?.name}</p>
+                            <p className={Styles.userEmail}>{user?.email}</p>
+                        </div>
+                    </div>
+                    <div onClick={handleLogout} className={Styles.logoutButton}>
+                        <i className={`fa-solid fa-sign-out-alt ${Styles.navItemIcon}`}></i>
+                        <p className={`${Styles.logoutButtonText} ${isOpen ? 'block' : 'hidden'}`}>
+                            Cerrar sesión
+                        </p>
                     </div>
                 </div>
-            </aside>
-            <main className={Styles.mainContent}>{children}</main>
+            </div>
+            <div className={Styles.mainContent}>{children}</div>
         </div>
     );
 };
