@@ -38,7 +38,7 @@ export const Styles = {
     userName: 'font-medium text-xl text-white truncate dark:text-gray-300',
     userEmail: 'text-sm text-white truncate dark:text-gray-300',
     logoutButton:
-        'flex items-center justify-center gap-2 text-xl mt-2 py-4 text-sm font-semibold bg-neutral-800 text-red-600 hover:bg-black transition-colors',
+        'flex items-center justify-center gap-2 text-xl mt-2 py-4 text-sm font-semibold bg-neutral-800 text-red-600 hover:cursor-pointer hover:bg-black transition-colors',
     logoutButtonText: 'truncate',
     subMenu: 'flex flex-col gap-2 p-2 px-5 rounded-lg transition-all duration-200 ease-in-out',
     subMenuItem: 'text-sm truncate dark:text-gray-300 hover:cursor-pointer rounded-lg p-2',
