@@ -88,7 +88,7 @@ export const StudentsPage = ({ students, columns }: Props) => {
     );
 
     return (
-        <div className={Styles.pageContainer}>
+        <div>
             <div className={Styles.pageHeader}>
                 <h1 className={Styles.pageTitle}>Alumnos</h1>
                 <p className={Styles.pageDescription}>
